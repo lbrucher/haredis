@@ -558,7 +558,9 @@ RedisHAClient.prototype.parseNodeList = function(nodeList, options) {
     });
     node.on('error', function(err) {
       if (self.listeners('error').length) {
-        self.emit('error', err);
+        self.error(err);
+        if (self.isMaster(this))
+          self.emit('error', err);
       }
       else {
         self.warn(err);
